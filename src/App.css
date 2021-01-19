@@ -2,6 +2,43 @@
   box-sizing: border-box;
 }
 
-.App {
+.bg {
+  align-items: center;
+  background-color: #f9f4f5;
+  background: linear-gradient(-4deg,#f8f8f8 42%,#e2e2e2 0,#f0f0f0 52%);
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 0 10px;
+}
 
+.wrapper {
+  background-color: #f8f8f8;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-top: 20px;
+  /* max-width: 600px; */
+  padding: 20px 40px;
+  /* width: 100%; */
+}
+
+h1 {
+  font-size: 24px;
+}
+
+.score-text {
+  margin: 10px 0;
+  text-align: center;
+}
+
+.score {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.MuiButtonBase-root.roll-btn {
+  display: block;
+  margin: 10px auto;
 }
