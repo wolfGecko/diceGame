@@ -2,7 +2,7 @@ DiceGame Notes
 
 Getting Started
     to start the mongoDB database open an admin compant promp and enter
-        D:\Coding\DiceGame\dice-game\backend\data\db>"C:\Program Files\MongoDB\Server\4.4\bin\mongod.exe" --dbpath="D:\Coding\DiceGame\dice-game\backend\data\db"
+        >"C:\Program Files\MongoDB\Server\4.4\bin\mongod.exe" --dbpath="D:\Coding\DiceGame\dice-game\backend\data\db"
     then to connect it to the shell open an admin command prompt, cd to the dbpath, and enter
         "C:\Program Files\MongoDB\Server\4.4\bin\mongo.exe"
     must leave both windows open

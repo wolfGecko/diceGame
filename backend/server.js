@@ -3,11 +3,17 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const playerRoutes = express.Router();
 const PORT = 4000;
 
-// require Player schema
-let Player = require( './diceGame.model')
+//routes
+const gameRoutes = express.Router();
+const playerRoutes = express.Router();
+const dieRoutes = express.Router();
+
+// schemas
+const { Game } = require( './diceGame.model');
+const { Player } = require( './diceGame.model');
+const { Die } = require( './diceGame.model');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -17,10 +23,68 @@ mongoose.connect('mongodb://127.0.0.1:27017/diceGame', { useNewUrlParser: true }
 const connection = mongoose.connection;
 // log successful connection
 connection.once('open', function() {
+    console.log(new Player())
     console.log('MongoDB database connection established successfully, my dude.');
 });
 
-// end points
+// game end points
+// find all games
+gameRoutes.route('/').get(function(req, res) {
+    Game.find(function(err, games) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(games);
+        }
+    });
+});
+// find game by accessCode
+gameRoutes.route('/find/:accessCode').get(function(req, res) {
+    Game.find({ accessCode: req.params.accessCode}, function(err, games) {
+        if (err) console.log(err);
+        else {
+            if (games.length === 0) res.status(404).send('Game not found.');
+            else {
+                res.status(200).json(games[0]);
+            }
+        }
+    });
+});
+// create new game
+gameRoutes.route('/new').post(function(req, res) {
+    let game = new Game(req.body);
+    console.log(game);
+    game.save().then(() => {
+        res.status(200).send('New game added.');
+    }).catch(err => {
+        res.status(400).send('Adding new game failed.', err);
+    });
+});
+// add player
+gameRoutes.route('/find/:accessCode/add-player').post(function(req, res) {
+    Game.find({ accessCode: req.params.accessCode}, function(err, games) {
+        if (err) console.log(err);
+        else {
+            if (games.length === 0) res.status(404).send('Game not found.');
+            else {
+                let game = games[0];
+                game.players.push({
+                    name: req.body.name,
+                    score: req.body.score,
+                    strikes: req.body.strikes
+                });
+                game.save().then(() => {
+                    res.send('Player added');
+                }).catch(err => {
+                    res.status(400).send('Player add failed');
+                    console.log(err);
+                })
+                // res.status(200).json(games[0]);
+            }
+        }
+    });
+})
+// player end points
 // get all players
 playerRoutes.route('/').get(function(req, res) {
     Player.find(function(err, players) {
@@ -56,11 +120,12 @@ playerRoutes.route('/update/:id').post(function(req, res) {
             })
         }
     });
-})
+});
 
-
-
+// use routes -- these have to be down here otherwise the req body is undefined
+app.use('/game', gameRoutes);
 app.use('/player', playerRoutes);
+app.use('/die', dieRoutes);
 
 app.listen(PORT, function() {
     console.log('Server is running on Port: ' + PORT);
