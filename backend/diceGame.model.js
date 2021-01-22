@@ -14,6 +14,7 @@ let DieScheme = new Schema({
 
 let GameSchema = new Schema({
     accessCode: String,
+    activePlayer: String,
     dice: [DieScheme],
     players: [PlayerSchema],
     pot: Number
@@ -22,8 +23,6 @@ let GameSchema = new Schema({
 const Die = mongoose.model('Die', DieScheme);
 const Player = mongoose.model('Player', PlayerSchema);
 const Game = mongoose.model('Game', GameSchema);
-
-// module.exports = Player;
 
 module.exports = {
     Die: Die,

@@ -9,3 +9,9 @@ Getting Started
 
     to run the server open a powershell in backend folder and run
         nodemon server
+
+Todo
+
+Pick game
+
+Different clients play as different players

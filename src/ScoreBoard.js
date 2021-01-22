@@ -2,18 +2,33 @@ import React from 'react';
 
 export function ScoreBoard(props) {
     const displayPlayers = () => {
-        console.log(props.players)
         if (props.players.length > 0) {
             return props.players.map(player => {
                 return (
-                    <div>{player.name}, {player.score}, {player.strikes}</div>
+                    <tr key={player._id}>
+                        <td>{player.name}</td>
+                        <td>{player.score}</td>
+                        <td>{player.strikes}</td>
+                    </tr>
                 );
             });
         }
     }
 
     return (
-        <div>{displayPlayers()}</div>
+        <>
+            <h2>Scorecard</h2>
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Name</th>
+                        <th>Score</th>
+                        <th>Strikes</th>
+                    </tr>
+                    {displayPlayers()}
+                </tbody>
+            </table>
+        </>
     );
 }
 
