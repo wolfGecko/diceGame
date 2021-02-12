@@ -15,7 +15,7 @@ let DieScheme = new Schema({
 let GameSchema = new Schema({
     accessCode: String,
     activePlayer: String,
-    dice: [DieScheme],
+    dice: Array,
     players: [PlayerSchema],
     pot: Number
 });

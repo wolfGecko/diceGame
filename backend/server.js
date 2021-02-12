@@ -84,29 +84,35 @@ gameRoutes.route('/find/:accessCode/add-player').post(function (req, res) {
         }
     });
 });
+
+function rollD6() {
+    return Math.floor(Math.random() * (6 - 1 + 1)) + 1;
+}
+
 // roll dice
-        gameRoutes.route('/find/:accessCode/roll').post(function (req, res) {
-            Game.find({ accessCode: req.params.accessCode }, function (err, games) {
-                if (err) console.log(err);
-                else {
-                    if (games.length === 0) res.status(404).send('Game not found.');
-                    else {
-                        let game = games[0];
-                        const toBeRolled = req.body.toBeRolled;
-                        toBeRolled.forEach(die => {
-                            // find each die and give it a random value between 1 and 6
-                        });
-                        game.save().then(() => {
-                            res.send(toBeRolled);
-                        }).catch(err => {
-                            res.status(400).send('Player add failed');
-                            console.log(err);
-                        })
-                        // res.status(200).json(games[0]);
-                    }
-                }
-            });
-        });
+gameRoutes.route('/find/:accessCode/roll').post(function (req, res) {
+    Game.find({ accessCode: req.params.accessCode }, function (err, games) {
+        if (err) console.log(err);
+        else {
+            if (games.length === 0) res.status(404).send('Game not found.');
+            else {
+                let game = games[0];
+                let diceTemp = [...game.dice];
+                const toBeRolled = req.body.toBeRolled;
+                toBeRolled.forEach(die => {
+                    diceTemp[die] = rollD6();
+                });
+                game.dice = diceTemp; //didnt like dice.game = dice but setting to a copy instead of the ref works
+                game.save().then(() => {
+                    res.status(200).send({goodRoll: true});
+                }).catch(err => {
+                    res.status(400).send('Player add failed');
+                    console.log(err);
+                });
+            }
+        }
+    });
+});
 // player end points
 // get all players
 playerRoutes.route('/').get(function (req, res) {

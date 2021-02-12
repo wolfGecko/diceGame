@@ -58,6 +58,10 @@ h2 span {
   text-align: center;
 }
 
+.dice-wrapper {
+  margin: 20px 0;
+}
+
 .die {
   align-items: center;
   border-radius: 4px;

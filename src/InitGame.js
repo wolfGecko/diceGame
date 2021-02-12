@@ -29,13 +29,7 @@ export function InitGame(props) {
         axios.post(`http://localhost:4000/game/new`, {
             accessCode: accessCode,
             activePlayer: '',
-            dice: [
-                { held: false, value: 1 },
-                { held: false, value: 1 },
-                { held: false, value: 1 },
-                { held: false, value: 1 },
-                { held: false, value: 1 }
-            ],
+            dice: [1, 1, 1, 1, 1],
             players: [
                 { name: name, score: 0, strikes: 0 }
             ],
@@ -61,18 +55,16 @@ export function InitGame(props) {
             setShowJoin(false);
         } else {
             // DEFAULT VALUE IS DEV-HELPER --- REMEBER TO GET RID OF THIS!!!
-            setAccessCode('A1A7');
+            setAccessCode('A1A8');
             setName('');
             setShowCreate(false);
             setShowJoin(true);
         }
     }
 
-    const wrapperClass = classes.root + ' wrapper';
-
     return (
         <>
-            <div className={wrapperClass}>
+            <div className={`${classes.root} wrapper`}>
                 <h1>Welcome to Dice Game</h1>
 
                 <Button variant="outlined" color="primary" onClick={() => handleCollapse('create')} disableElevation>

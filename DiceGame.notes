@@ -15,3 +15,7 @@ Todo
 Pick game
 
 Different clients play as different players
+
+Lessons Learned
+
+You can pass useStyles from parent to child but make sure to call the function -- const classes = props.useStyles();
