@@ -19,11 +19,37 @@ function PlayGame(props) {
 
     const dice = props.game.dice;
 
+    const displayPips = value => {
+        let die;
+        switch (value) {
+            case 1:
+                die = <div class="first-face"><span class="pip"></span></div>
+                break;
+            case 2:
+                die = <div class="second-face"><span class="pip"></span><span class="pip"></span></div>
+                break;
+            case 3:
+                die = <div class="third-face"><span class="pip"></span><span class="pip"></span><span class="pip"></span></div>
+                break;
+            case 4:
+                die = <div class="fourth-face"><div class="column"><span class="pip"></span><span class="pip"></span></div><div class="column"><span class="pip"></span><span class="pip"></span></div></div>
+                break;
+            case 5:
+                die = <div class="fifth-face"><div class="column"><span class="pip"></span><span class="pip"></span></div><span class="pip"></span><div class="column"><span class="pip"></span><span class="pip"></span></div>
+                </div>
+                break;
+            case 6:
+                die = <div class="sixth-face"><div class="column"><span class="pip"></span><span class="pip"></span><span class="pip"></span></div><div class="column"><span class="pip"></span><span class="pip"></span><span class="pip"></span></div></div>
+                break;
+        }
+        return die;
+    }
+
     const displayDice = () => {
         return (
             <div className="dice-wrapper">
                 {dice.map((value, index) => {
-                    return <span key={index} onClick={() => holdDie(index)} className={heldDice.indexOf(index) === -1 ? 'die' : 'die held'}>{value}</span>
+                    return <span key={index} onClick={() => holdDie(index)} className={heldDice.indexOf(index) === -1 ? 'die' : 'die held'}>{displayPips(value)}</span>
                 })}
             </div>
         );
@@ -91,16 +117,19 @@ function PlayGame(props) {
 
     const bankPot = () => { console.log('CASH') }
 
+    const numberHeld = heldDice.length;
+
     return (
         <>
             <div className={`${classes.root} wrapper`}>
                 <h2>Dice Game<span>{props.game.accessCode}</span></h2>
-                {/* <DiceRoller /> */}
                 <div>{`You are ${activePlayer.name}`}</div>
                 <div>{`The pot is ${handlePot()}`}</div>
-                {displayDice()}
-                <Button variant="contained" color="primary" onClick={rollDice} disableElevation>{`Roll ${5 - heldDice.length} Dice`}</Button>
-                <Button variant="outlined" color="primary" onClick={bankPot} disableElevation>Bank</Button>
+                <div>
+                    {displayDice()}
+                </div>
+                <Button variant="contained" color="primary" onClick={rollDice} disableElevation>{numberHeld === 5 ? 'Hot Dice' : `Roll ${5 - heldDice.length} Dice`}</Button>
+                <Button variant="outlined" color="primary" onClick={bankPot} disableElevation disabled={heldDice.length === 0 || numberHeld === 5}>Bank</Button>
             </div>
             <div className="wrapper">
                 <ScoreBoard players={props.game.players} />
